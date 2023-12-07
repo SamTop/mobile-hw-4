@@ -15,6 +15,7 @@ import com.example.homework4.navigation.NavGraph
 import com.example.homework4.repository.DataLoaderRepository
 import com.example.homework4.repository.IRepo
 import com.example.homework4.repository.WeatherResponse
+import com.example.homework4.retrofit.WeatherAPIService
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
