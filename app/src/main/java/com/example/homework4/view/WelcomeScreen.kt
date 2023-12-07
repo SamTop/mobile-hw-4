@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.homework4.TemperatureUnit
+import com.example.homework4.repository.IRepo
 import com.example.homework4.viewModel.CitiesViewModel
 import com.example.homework4.viewModel.ScreenSettingsViewModel
 import com.example.homework4.viewModel.WeatherApiViewModelFactory
@@ -43,7 +44,10 @@ import com.google.android.gms.location.LocationServices
 import java.util.Locale
 
 @Composable
-fun WelcomeScreen(navController: NavHostController, settingsViewModel: ScreenSettingsViewModel = viewModel()) {
+fun WelcomeScreen(navController: NavHostController,
+                  settingsViewModel: ScreenSettingsViewModel = viewModel(),
+                  repo: IRepo
+) {
     val context = LocalContext.current
     var cityName by remember { mutableStateOf("") }
     var cityInfo by remember { mutableStateOf("") }
@@ -83,7 +87,7 @@ fun WelcomeScreen(navController: NavHostController, settingsViewModel: ScreenSet
         onDispose { }
     }
 
-    val viewModelFactory = WeatherApiViewModelFactory(city = cityName)
+    val viewModelFactory = WeatherApiViewModelFactory(city = cityName, repo)
     val viewModel = ViewModelProvider(ViewModelStore(), viewModelFactory)[CitiesViewModel::class.java]
     val weather by viewModel.weather.observeAsState()
     val temp = weather?.current?.temperatureCelsius

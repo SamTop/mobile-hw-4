@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.example.homework4.repository.IRepo
 import com.example.homework4.view.CityList
 import com.example.homework4.viewModel.CitiesViewModel
 import com.example.homework4.view.WelcomeScreen
@@ -18,7 +19,7 @@ import com.example.homework4.view.SettingsScreen
 import com.example.homework4.viewModel.WeatherApiViewModelFactory
 
 @Composable
-fun NavGraph(context: Context) {
+fun NavGraph(context: Context, repo: IRepo) {
     val navController = rememberNavController()
 
     val settingsViewModel: ScreenSettingsViewModel = viewModel()
@@ -29,7 +30,7 @@ fun NavGraph(context: Context) {
             startDestination = Route.Welcome.route
         ) {
             composable(route = Route.Welcome.route) {
-                WelcomeScreen(navController, settingsViewModel)
+                WelcomeScreen(navController, settingsViewModel, repo)
             }
             composable(route = Route.Cities.route) {
                 CitiesScreen(navController, context)
@@ -40,7 +41,7 @@ fun NavGraph(context: Context) {
             composable(route = Route.CityDetails.route) {
                     backStackEntry ->
                 val city = backStackEntry.arguments?.getString("city")
-                val viewModelFactory = WeatherApiViewModelFactory(city = city.toString())
+                val viewModelFactory = WeatherApiViewModelFactory(city = city.toString(), repo)
                 val viewModel = ViewModelProvider(ViewModelStore(), viewModelFactory)[CitiesViewModel::class.java]
                 if (city != null) {
                     CityList(cityName = city, navController, viewModel, settingsViewModel, context)
